@@ -1,4 +1,4 @@
-This small project is a cheat sheat for a lesson exercises.
+This small project is a cheat sheet for a lesson exercises.
 
 It solves x64 assembly instructions IMUL and MUL 
 
