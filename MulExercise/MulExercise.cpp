@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdint>
 #include <type_traits>
+#include <optional>
+#include <cstdlib>
 
 template <typename T, typename U>
 T resizeHexValue(T hexValue, U byteCount)
@@ -85,22 +87,22 @@ void multiplyOperation(P val1, P val2, F firstValByte, S secondValByte, R result
         if (resultByte == 1)
         {
             int8_t result = val1 * val2;
-            std::cout << std::hex << (int)result;
+            std::cout << std::hex << (int)result << '\n';
         }
         else if (resultByte == 2)
         {
             int16_t result = val1 * val2;
-            std::cout << std::hex << result;
+            std::cout << std::hex << result << '\n';
         }
         else if (resultByte == 4)
         {
             int32_t result = val1 * val2;
-            std::cout << std::hex << result;
+            std::cout << std::hex << result << '\n';
         }
         else if (resultByte == 8)
         {
             int64_t result = val1 * val2;
-            std::cout << std::hex << result;
+            std::cout << std::hex << result << '\n';
         }
     }
     // it is mul operation
@@ -124,92 +126,92 @@ void multiplyOperation(P val1, P val2, F firstValByte, S secondValByte, R result
         if (resultByte == 1)
         {
             uint8_t result = val1 * val2;
-            std::cout << std::hex << result;
+            std::cout << std::hex << result << '\n';
         }
         else if (resultByte == 2)
         {
             uint16_t result = val1 * val2;
-            std::cout << std::hex << result;
+            std::cout << std::hex << result << '\n';
         }
         else if (resultByte == 4)
         {
             uint32_t result = val1 * val2;
-            std::cout << std::hex << result;
+            std::cout << std::hex << result << '\n';
         }
         else if (resultByte == 8)
         {
             uint64_t result = val1 * val2;
-            std::cout << std::hex << result;
+            std::cout << std::hex << result << '\n';
         }
     }
 }
 
 int main()
 {
-
-    std::cout << "What is the instruction? Imul or Mul\n";
-    std::cout << "Type [i/m]\n";
     char intOrUint{};
-    std::cin >> intOrUint;
+    uint64_t firstVal{};
+    uint64_t secondVal{};
+    int firstvaluesByteCount{};
+    int secondvaluesByteCount{};
+    int resultByteCount{};
+    bool wantToReset{};
 
-    if (std::tolower(intOrUint) == 'i')
+
+    while (true)
     {
+        std::cout << "What is the instruction? Imul or Mul\n";
+        std::cout << "Type [i/m]\n";
+        std::cin >> intOrUint;
 
         std::cout << "Enter your first hex value\n";
-        uint64_t firstINT{ };
-        std::cin >> std::hex >> firstINT;
+        std::cin >> std::hex >> firstVal;
 
         std::cout << "Size of the value will used in multiplication (bytes)\n";
-        int firstvaluesByteCount{};
         std::cin >> firstvaluesByteCount;
 
         std::cout << "Enter your second hex value\n";
-        uint64_t secondINT{};
-        std::cin >> std::hex >> secondINT;
+        std::cin >> std::hex >> secondVal;
 
         std::cout << "Size of the value will used in multiplication (bytes)\n";
-        int secondvaluesByteCount{};
         std::cin >> secondvaluesByteCount;
 
         std::cout << "Size of the result value (bytes)\n";
-        int resultByteCount{};
         std::cin >> resultByteCount;
 
+        if (std::tolower(intOrUint) == 'i')
+        {
 
-        int64_t firstSINT = (int64_t)(firstINT);
-        int64_t secondSINT = (int64_t)(secondINT);
-        firstINT = resizeHexValue<int64_t, int>(firstSINT, firstvaluesByteCount);
-        secondINT = resizeHexValue<int64_t, int>(secondSINT, secondvaluesByteCount);
+            int64_t firstSINT = (int64_t)(firstVal);
+            int64_t secondSINT = (int64_t)(secondVal);
+            firstSINT = resizeHexValue<int64_t, int>(firstSINT, firstvaluesByteCount);
+            secondSINT = resizeHexValue<int64_t, int>(secondSINT, secondvaluesByteCount);
 
-        multiplyOperation<int64_t, int, int, int>(firstSINT, secondSINT, firstvaluesByteCount, secondvaluesByteCount, resultByteCount);
+            multiplyOperation<int64_t, int, int, int>(firstSINT, secondSINT, firstvaluesByteCount, secondvaluesByteCount, resultByteCount);
 
+        }
+        else if (std::tolower(intOrUint) == 'm')
+        {
+            // because of firstVal and secondVal are uint64_t
+            firstVal = resizeHexValue<uint64_t, int>(firstVal, firstvaluesByteCount);
+            secondVal = resizeHexValue<uint64_t, int>(secondVal, secondvaluesByteCount);
+
+            multiplyOperation<int64_t, int, int, int>(firstVal, secondVal, firstvaluesByteCount, secondvaluesByteCount, resultByteCount);
+        }
+
+        std::cout << "Do you want to reset\n";
+        std::cout << "[1 / 0] \n";
+        std::cin >> wantToReset;
+        if (wantToReset)
+        {
+            system("CLS");
+            continue;
+        }  
+        else
+            break;
     }
-    else if (std::tolower(intOrUint) == 'm')
-    {
-        std::cout << "Enter your first hex value\n";
-        uint64_t firstUINT{ };
-        std::cin >> std::hex >> firstUINT;
 
-        std::cout << "Size of the value will used in multiplication (bytes)\n";
-        int firstvaluesByteCount{};
-        std::cin >> firstvaluesByteCount;
+    return 0;
 
-        std::cout << "Enter your second hex value\n";
-        uint64_t secondUINT{};
-        std::cin >> std::hex >> secondUINT;
 
-        std::cout << "Size of the value will used in multiplication (bytes)\n";
-        int secondvaluesByteCount{};
-        std::cin >> secondvaluesByteCount;
-
-        std::cout << "Size of the result value (bytes)\n";
-        int resultByteCount{};
-        std::cin >> resultByteCount;
-
-        firstUINT = resizeHexValue<uint64_t, int>(firstUINT, firstvaluesByteCount);
-        secondUINT = resizeHexValue<uint64_t, int>(secondUINT, secondvaluesByteCount);
-
-        multiplyOperation<int64_t, int, int, int>(firstUINT, secondUINT, firstvaluesByteCount, secondvaluesByteCount, resultByteCount);
-    }
 }
 
