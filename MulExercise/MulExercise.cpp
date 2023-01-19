@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdint>
 #include <type_traits>
-#include <optional>
 #include <cstdlib>
 
 template <typename T, typename U>
