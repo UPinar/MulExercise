@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MulExercise", "MulExercise\MulExercise.vcxproj", "{02768FE2-127D-4D17-929E-0BC2B6F9B063}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02768FE2-127D-4D17-929E-0BC2B6F9B063}.Debug|x64.ActiveCfg = Debug|x64
+		{02768FE2-127D-4D17-929E-0BC2B6F9B063}.Debug|x64.Build.0 = Debug|x64
+		{02768FE2-127D-4D17-929E-0BC2B6F9B063}.Debug|x86.ActiveCfg = Debug|Win32
+		{02768FE2-127D-4D17-929E-0BC2B6F9B063}.Debug|x86.Build.0 = Debug|Win32
+		{02768FE2-127D-4D17-929E-0BC2B6F9B063}.Release|x64.ActiveCfg = Release|x64
+		{02768FE2-127D-4D17-929E-0BC2B6F9B063}.Release|x64.Build.0 = Release|x64
+		{02768FE2-127D-4D17-929E-0BC2B6F9B063}.Release|x86.ActiveCfg = Release|Win32
+		{02768FE2-127D-4D17-929E-0BC2B6F9B063}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8CEAD931-B564-401C-AF7B-6B0D144D2CDD}
+	EndGlobalSection
+EndGlobal
