@@ -40,8 +40,9 @@ T twosCompIfNegative(T value, U bitCount)
     else
         return value;
 }
-//template metaprogramming needs to create results types in compile time and for a dry principle
 
+// class template
+/*
 template <typename typeOfResult, typename typeVals>
 struct printResult {
     printResult(typeVals val1, typeVals val2 , int byteCount = 0)
@@ -53,6 +54,18 @@ struct printResult {
             std::cout << std::hex << (int)result << '\n';
     }
 };
+*/
+
+
+//function template
+template <typename typeOfResult, typename typeVals>
+void printResult(typeVals val1, typeVals val2, int byteCount = 0) {
+    typeOfResult result = (typeOfResult)(val1 * val2);
+    if (byteCount != 1)
+        std::cout << std::hex << result << '\n';
+    else
+        std::cout << std::hex << (int)result << '\n';
+}
 
 template <typename P, typename F, typename S, typename R>
 void multiplyOperation(P val1, P val2, F firstValByte, S secondValByte, R resultByte)
@@ -79,30 +92,32 @@ void multiplyOperation(P val1, P val2, F firstValByte, S secondValByte, R result
             val2 = twosCompIfNegative<int32_t, int>((int32_t)val2, secondbitCount);
 
 
-        //int8_t result = (int8_t)(val1 * val2);
-        //std::cout << std::hex << (int)result << '\n';
+        /*
+        for class template
+        auto result = printResult<int8_t, P>(val1, val2, resultByte);
+        */
+
         if (resultByte == 1)
-            auto result = printResult<int8_t, P>(val1, val2, resultByte);
+            printResult<int8_t,P>(val1, val2, resultByte);
         else if (resultByte == 2)
-            auto result = printResult<int16_t, P>(val1,val2);
+            printResult<int16_t, P>(val1,val2);
         else if (resultByte == 4)
-            auto result = printResult<int32_t, P>(val1, val2);
+            printResult<int32_t, P>(val1, val2);
         else if (resultByte == 8)
-            auto result = printResult<int64_t, P>(val1, val2);
+            printResult<int64_t, P>(val1, val2);
          
     }
     // if the instruction is MUL
     else
     {
-
         if (resultByte == 1)
-            auto result = printResult<uint8_t, P>(val1, val2, resultByte);
+            printResult<uint8_t, P>(val1, val2, resultByte);
         else if (resultByte == 2)
-            auto result = printResult<uint16_t, P>(val1, val2);
+            printResult<uint16_t, P>(val1, val2);
         else if (resultByte == 4)
-            auto result = printResult<uint32_t, P>(val1, val2);
+            printResult<uint32_t, P>(val1, val2);
         else if (resultByte == 8)
-            auto result = printResult<uint64_t, P>(val1, val2);
+            printResult<uint64_t, P>(val1, val2);
     }
 }
 
