@@ -42,11 +42,24 @@ T twosCompIfNegative(T value, U bitCount)
 }
 //template metaprogramming needs to create results types in compile time and for a dry principle
 
+template <typename typeOfResult, typename typeVals>
+struct printResult {
+    printResult(typeVals val1, typeVals val2 , int byteCount = 0)
+    {
+        typeOfResult result =(typeOfResult) (val1 * val2);
+        if (byteCount != 1)
+            std::cout << std::hex << result << '\n';
+        else
+            std::cout << std::hex << (int)result << '\n';
+    }
+};
+
 template <typename P, typename F, typename S, typename R>
 void multiplyOperation(P val1, P val2, F firstValByte, S secondValByte, R resultByte)
 {
     int firstbitCount{ firstValByte * 8 };
     int secondbitCount{ secondValByte * 8 };
+
 
     // if the instruction is IMUL
     if (std::is_signed<P>::value == 1)
@@ -65,51 +78,31 @@ void multiplyOperation(P val1, P val2, F firstValByte, S secondValByte, R result
         else if (secondValByte == 4)
             val2 = twosCompIfNegative<int32_t, int>((int32_t)val2, secondbitCount);
 
+
+        //int8_t result = (int8_t)(val1 * val2);
+        //std::cout << std::hex << (int)result << '\n';
         if (resultByte == 1)
-        {
-            int8_t result = (int8_t)(val1 * val2);
-            std::cout << std::hex << (int)result << '\n';
-        }
+            auto result = printResult<int8_t, P>(val1, val2, resultByte);
         else if (resultByte == 2)
-        {
-            int16_t result = (int16_t)(val1 * val2);
-            std::cout << std::hex << result << '\n';
-        }
+            auto result = printResult<int16_t, P>(val1,val2);
         else if (resultByte == 4)
-        {
-            int32_t result = (int32_t)(val1 * val2);
-            std::cout << std::hex << result << '\n';
-        }
+            auto result = printResult<int32_t, P>(val1, val2);
         else if (resultByte == 8)
-        {
-            int64_t result = (int64_t)(val1 * val2);
-            std::cout << std::hex << result << '\n';
-        }
+            auto result = printResult<int64_t, P>(val1, val2);
          
     }
     // if the instruction is MUL
     else
     {
+
         if (resultByte == 1)
-        {
-            uint8_t result = (uint8_t)(val1 * val2);
-            std::cout << std::hex << result << '\n';
-        }
+            auto result = printResult<uint8_t, P>(val1, val2, resultByte);
         else if (resultByte == 2)
-        {
-            uint16_t result = (uint16_t)(val1 * val2);
-            std::cout << std::hex << result << '\n';
-        }
+            auto result = printResult<uint16_t, P>(val1, val2);
         else if (resultByte == 4)
-        {
-            uint32_t result = (uint32_t)(val1 * val2);
-            std::cout << std::hex << result << '\n';
-        }
+            auto result = printResult<uint32_t, P>(val1, val2);
         else if (resultByte == 8)
-        {
-            uint64_t result = (uint64_t)(val1 * val2);
-            std::cout << std::hex << result << '\n';
-        }
+            auto result = printResult<uint64_t, P>(val1, val2);
     }
 }
 
