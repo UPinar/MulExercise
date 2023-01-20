@@ -3,43 +3,6 @@
 #include <type_traits>
 #include <cstdlib>
 
-template <typename T>
-T resizeHexValue(T hexValue, int byteCount)
-{
-    switch (byteCount)
-    {
-    case 1:
-        hexValue &= 0xFF;
-        break;
-    case 2:
-        hexValue &= 0xFFFF;
-        break;
-    case 4:
-        hexValue &= 0xFFFFFFFF;
-        break;
-    case 8:
-        hexValue &= 0xFFFFFFFFFFFFFFFF;
-        break;
-    default:
-        std::cout << "Cannot do the operation with " << byteCount << " byte Count\n";
-        exit(0);
-    }
-    return hexValue;
-}
-
-
-template <typename T>
-T twosCompIfNegative(T value, int bitCount)
-{
-    if ((value >> (bitCount - 1)) == 1)
-    {
-        value = ~value;
-        value += 0x1;
-        return value;
-    }
-    else
-        return value;
-}
 
 // class template
 /*
@@ -56,11 +19,12 @@ struct printResult {
 };
 */
 
-
 //function template
 template <typename typeOfResult, typename typeVals>
-void printResult(typeVals val1, typeVals val2, int byteCount = 0) {
+void printResult(typeVals val1, typeVals val2, int byteCount = 0)
+{
     typeOfResult result = (typeOfResult)(val1 * val2);
+
     if (byteCount != 1)
         std::cout << std::hex << result << '\n';
     else
@@ -68,11 +32,23 @@ void printResult(typeVals val1, typeVals val2, int byteCount = 0) {
 }
 
 template <typename T>
+T twosCompIfNegative(T value, int bitCount)
+{
+    if ((value >> (bitCount - 1)) == 1)
+    {
+        value = ~value;
+        value += 0x1;
+        return value;
+    }
+    else
+        return value;
+}
+
+template <typename T>
 void multiplyOperation(T val1, T val2, int firstValByte, int secondValByte, int resultByte)
 {
     int firstbitCount{ firstValByte * 8 };
     int secondbitCount{ secondValByte * 8 };
-
 
     // if the instruction is IMUL
     if (std::is_signed<T>::value == 1)
@@ -90,7 +66,6 @@ void multiplyOperation(T val1, T val2, int firstValByte, int secondValByte, int 
             val2 = twosCompIfNegative<int16_t>((int16_t)val2, secondbitCount);
         else if (secondValByte == 4)
             val2 = twosCompIfNegative<int32_t>((int32_t)val2, secondbitCount);
-
 
         /*
         for class template
@@ -121,6 +96,30 @@ void multiplyOperation(T val1, T val2, int firstValByte, int secondValByte, int 
     }
 }
 
+template <typename T>
+T resizeHexValue(T hexValue, int byteCount)
+{
+    switch (byteCount)
+    {
+    case 1:
+        hexValue &= 0xFF;
+        break;
+    case 2:
+        hexValue &= 0xFFFF;
+        break;
+    case 4:
+        hexValue &= 0xFFFFFFFF;
+        break;
+    case 8:
+        hexValue &= 0xFFFFFFFFFFFFFFFF;
+        break;
+    default:
+        std::cout << "Cannot do the operation with " << byteCount << " byte Count\n";
+        exit(0);
+    }
+    return hexValue;
+}
+
 int main()
 {
     char intOrUint{};
@@ -130,7 +129,6 @@ int main()
     int secondvaluesByteCount{};
     int resultByteCount{};
     bool wantToReset{};
-
 
     while (true)
     {
@@ -155,9 +153,9 @@ int main()
 
         if (std::tolower(intOrUint) == 'i')
         {
-
             int64_t firstSignedINT = (int64_t)firstHexVal;
             int64_t secondSignedINT = (int64_t)secondHexVal;
+
             firstSignedINT = resizeHexValue<int64_t>(firstSignedINT, firstvaluesByteCount);
             secondSignedINT = resizeHexValue<int64_t>(secondSignedINT, secondvaluesByteCount);
 
