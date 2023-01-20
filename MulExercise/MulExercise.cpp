@@ -162,7 +162,7 @@ int main()
             firstHexVal = resizeHexValue<uint64_t, int>(firstHexVal, firstvaluesByteCount);
             secondHexVal = resizeHexValue<uint64_t, int>(secondHexVal, secondvaluesByteCount);
 
-            multiplyOperation<int64_t, int, int, int>(firstHexVal, secondHexVal, firstvaluesByteCount, secondvaluesByteCount, resultByteCount);
+            multiplyOperation<uint64_t, int, int, int>(firstHexVal, secondHexVal, firstvaluesByteCount, secondvaluesByteCount, resultByteCount);
         }
 
         std::cout << "Do you want to reset\n";
