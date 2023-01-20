@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdint>
 #include <type_traits>
-#include <optional>
 #include <cstdlib>
 
 template <typename T, typename U>
@@ -41,6 +40,7 @@ T twosCompIfNegative(T value, U bitCount)
     else
         return value;
 }
+//template metaprogramming needs to create results types in compile time and for a dry principle
 
 template <typename P, typename F, typename S, typename R>
 void multiplyOperation(P val1, P val2, F firstValByte, S secondValByte, R resultByte)
@@ -48,99 +48,66 @@ void multiplyOperation(P val1, P val2, F firstValByte, S secondValByte, R result
     int firstbitCount{ firstValByte * 8 };
     int secondbitCount{ secondValByte * 8 };
 
-    // it is imul operation
+    // if the instruction is IMUL
     if (std::is_signed<P>::value == 1)
     {
-
         if (firstValByte == 1)
-        {
-            int8_t firstVal = (int8_t)val1;
-            val1 = twosCompIfNegative<int8_t, int>(val1, firstbitCount);
-        }
+            val1 = twosCompIfNegative<int8_t, int>((int8_t)val1, firstbitCount);
         else if (firstValByte == 2)
-        {
-            int16_t firstVal = (int16_t)val1;
-            val1 = twosCompIfNegative<int16_t, int>(val1, firstbitCount);
-        }
+            val1 = twosCompIfNegative<int16_t, int>((int16_t)val1, firstbitCount);
         else if (firstValByte == 4)
-        {
-            int32_t firstVal = (int32_t)val1;
-            val1 = twosCompIfNegative<int32_t, int>(val1, firstbitCount);
-        }
+            val1 = twosCompIfNegative<int32_t, int>((int32_t)val1, firstbitCount);
 
         if (secondValByte == 1)
-        {
-            int8_t secondVal = (int8_t)val2;
-            val2 = twosCompIfNegative<int8_t, int>(val2, secondbitCount);
-        }
+            val2 = twosCompIfNegative<int8_t, int>((int8_t)val2, secondbitCount);
         else if (secondValByte == 2)
-        {
-            int16_t secondVal = (int16_t)val2;
-            val2 = twosCompIfNegative<int16_t, int>(val2, secondbitCount);
-        }
+            val2 = twosCompIfNegative<int16_t, int>((int16_t)val2, secondbitCount);
         else if (secondValByte == 4)
-        {
-            int32_t secondVal = (int32_t)val2;
-            val2 = twosCompIfNegative<int32_t, int>(val2, secondbitCount);
-        }
+            val2 = twosCompIfNegative<int32_t, int>((int32_t)val2, secondbitCount);
 
         if (resultByte == 1)
         {
-            int8_t result = val1 * val2;
+            int8_t result = (int8_t)(val1 * val2);
             std::cout << std::hex << (int)result << '\n';
         }
         else if (resultByte == 2)
         {
-            int16_t result = val1 * val2;
+            int16_t result = (int16_t)(val1 * val2);
             std::cout << std::hex << result << '\n';
         }
         else if (resultByte == 4)
         {
-            int32_t result = val1 * val2;
+            int32_t result = (int32_t)(val1 * val2);
             std::cout << std::hex << result << '\n';
         }
         else if (resultByte == 8)
         {
-            int64_t result = val1 * val2;
+            int64_t result = (int64_t)(val1 * val2);
             std::cout << std::hex << result << '\n';
         }
+         
     }
-    // it is mul operation
+    // if the instruction is MUL
     else
     {
-        if (firstValByte == 1)
-            uint8_t firstVal = (uint8_t)val1;
-        else if (firstValByte == 2)
-            uint16_t firstVal = (uint16_t)val1;
-        else if (firstValByte == 4)
-            uint32_t firstVal = (uint32_t)val1;
-
-        if (secondValByte == 1)
-            uint8_t secondVal = (uint8_t)val2;
-        else if (secondValByte == 2)
-            uint16_t secondVal = (uint16_t)val2;
-        else if (secondValByte == 4)
-            uint32_t secondVal = (uint32_t)val2;
-
-
         if (resultByte == 1)
         {
-            uint8_t result = val1 * val2;
+            uint8_t result = (uint8_t)(val1 * val2);
             std::cout << std::hex << result << '\n';
         }
         else if (resultByte == 2)
         {
-            uint16_t result = val1 * val2;
+            uint16_t result = (uint16_t)(val1 * val2);
             std::cout << std::hex << result << '\n';
         }
         else if (resultByte == 4)
         {
-            uint32_t result = val1 * val2;
+            uint32_t result = (uint32_t)(val1 * val2);
             std::cout << std::hex << result << '\n';
         }
         else if (resultByte == 8)
         {
-            uint64_t result = val1 * val2;
+            uint64_t result = (uint64_t)(val1 * val2);
             std::cout << std::hex << result << '\n';
         }
     }
@@ -149,8 +116,8 @@ void multiplyOperation(P val1, P val2, F firstValByte, S secondValByte, R result
 int main()
 {
     char intOrUint{};
-    uint64_t firstVal{};
-    uint64_t secondVal{};
+    uint64_t firstHexVal{};
+    uint64_t secondHexVal{};
     int firstvaluesByteCount{};
     int secondvaluesByteCount{};
     int resultByteCount{};
@@ -164,13 +131,13 @@ int main()
         std::cin >> intOrUint;
 
         std::cout << "Enter your first hex value\n";
-        std::cin >> std::hex >> firstVal;
+        std::cin >> std::hex >> firstHexVal;
 
         std::cout << "Size of the value will used in multiplication (bytes)\n";
         std::cin >> firstvaluesByteCount;
 
         std::cout << "Enter your second hex value\n";
-        std::cin >> std::hex >> secondVal;
+        std::cin >> std::hex >> secondHexVal;
 
         std::cout << "Size of the value will used in multiplication (bytes)\n";
         std::cin >> secondvaluesByteCount;
@@ -181,21 +148,21 @@ int main()
         if (std::tolower(intOrUint) == 'i')
         {
 
-            int64_t firstSINT = (int64_t)(firstVal);
-            int64_t secondSINT = (int64_t)(secondVal);
-            firstSINT = resizeHexValue<int64_t, int>(firstSINT, firstvaluesByteCount);
-            secondSINT = resizeHexValue<int64_t, int>(secondSINT, secondvaluesByteCount);
+            int64_t firstSignedINT = (int64_t)firstHexVal;
+            int64_t secondSignedINT = (int64_t)secondHexVal;
+            firstSignedINT = resizeHexValue<int64_t, int>(firstSignedINT, firstvaluesByteCount);
+            secondSignedINT = resizeHexValue<int64_t, int>(secondSignedINT, secondvaluesByteCount);
 
-            multiplyOperation<int64_t, int, int, int>(firstSINT, secondSINT, firstvaluesByteCount, secondvaluesByteCount, resultByteCount);
+            multiplyOperation<int64_t, int, int, int>(firstSignedINT, secondSignedINT, firstvaluesByteCount, secondvaluesByteCount, resultByteCount);
 
         }
         else if (std::tolower(intOrUint) == 'm')
         {
             // because of firstVal and secondVal are uint64_t
-            firstVal = resizeHexValue<uint64_t, int>(firstVal, firstvaluesByteCount);
-            secondVal = resizeHexValue<uint64_t, int>(secondVal, secondvaluesByteCount);
+            firstHexVal = resizeHexValue<uint64_t, int>(firstHexVal, firstvaluesByteCount);
+            secondHexVal = resizeHexValue<uint64_t, int>(secondHexVal, secondvaluesByteCount);
 
-            multiplyOperation<int64_t, int, int, int>(firstVal, secondVal, firstvaluesByteCount, secondvaluesByteCount, resultByteCount);
+            multiplyOperation<int64_t, int, int, int>(firstHexVal, secondHexVal, firstvaluesByteCount, secondvaluesByteCount, resultByteCount);
         }
 
         std::cout << "Do you want to reset\n";
